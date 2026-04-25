@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المدير</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: #E8F5E8;
+            direction: rtl;
+        }
+
+        /* الهيدر */
+        .header {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo img {
+            width: 35px;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .user-info .badge {
+            background: #2E7D32;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .logout {
+            color: #D32F2F;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* العنوان الرئيسي */
+        .main-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1B5E20;
+            margin: 30px 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* التابات */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+        }
+
+        .tabs a {
+            color: #388E3C;
+            text-decoration: none;
+            font-weight: 600;
+            padding-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .tabs a.active {
+            border-bottom: 3px solid #2E7D32;
+            color: #2E7D32;
+        }
+
+        /* الكارد الأبيض */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin: 0 50px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #212121;
+        }
+
+        /* الفورم */
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #424242;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #C8E6C9;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 15px;
+            font-size: 14px;
+            color: #1B5E20;
+            font-weight: 600;
+        }
+
+        .form-control::placeholder {
+            color: #66BB6A;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231B5E20' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
+            padding-left: 40px;
+        }
+
+        .btn-add {
+            background: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 35px;
+            font-weight: 700;
+            cursor: pointer;
+            height: 45px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .btn-add:hover {
+            background: #1B5E20;
+        }
+
+        /* الجدول */
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .table thead th {
+            background: #C8E6C9;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #1B5E20;
+            text-align: right;
+        }
+
+        .table thead th:first-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .table thead th:last-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .table tbody tr {
+            background: #F1F8E9;
+        }
+
+        .table tbody td {
+            padding: 16px 14px;
+            font-size: 14px;
+            color: #212121;
+            font-weight: 600;
+        }
+
+        .table tbody tr td:first-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .table tbody tr td:last-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .delete-icon {
+            color: #D32F2F;
+            cursor: pointer;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        .delete-icon:hover {
+            color: #B71C1C;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <div class="header">
+        <div class="logout">
+            خروج 
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+        </div>
+        
+        <div class="user-info">
+            <span class="badge">rowida189@Filed.com</span>
+            <span class="badge">لوحة التحكم</span>
+        </div>
+
+        <div class="logo">
+            Field
+            <svg width="35" height="35" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="8" fill="#2E7D32"/>
+                <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- العنوان -->
+    <h1 class="main-title">
+        لوحة تحكم المدير
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="#2E7D32">
+            <circle cx="7" cy="7" r="3"/>
+            <circle cx="17" cy="7" r="3"/>
+            <circle cx="7" cy="17" r="3"/>
+            <circle cx="17" cy="17" r="3"/>
+        </svg>
+    </h1>
+
+    <!-- التابات -->
+    <div class="tabs">
+        <a href="#">إدارة الملاعب</a>
+        <a href="#">الحجوزات</a>
+        <a href="#" class="active">جلسات التدريب</a>
+    </div>
+
+    <!-- الكارد -->
+    <div class="card">
+        <h3 class="card-title">سجل التدريبات (0)</h3>
+        
+        <!-- الفورم -->
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label>اختر الملعب</label>
+                <select class="form-control">
+                    <option>اختر الملعب...</option>
+                    <option>الملعب الخماسي - الظهير الصحراوي</option>
+                    <option>ملعب الأمل 2</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>التاريخ</label>
+                <input type="date" class="form-control" value="2026-04-11">
+            </div>
+            
+            <div class="form-group">
+                <label>الوقت</label>
+                <select class="form-control">
+                    <option>18:00</option>
+                    <option>19:00</option>
+                    <option>20:00</option>
+                </select>
+            </div>
+            
+            <button class="btn-add">إضافة تدريب</button>
+        </div>
+
+        <!-- الجدول -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>الإجراءات</th>
+                    <th>الوقت</th>
+                    <th>التاريخ</th>
+                    <th>الملعب</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="delete-icon">🗑️</td>
+                    <td>18:00</td>
+                    <td>2026-04-11</td>
+                    <td>الملعب الخماسي - الظهير الصحراوي</td>
+                </tr>
+                <tr>
+                    <td class="delete-icon">🗑️</td>
+                    <td>19:00</td>
+                    <td>2026-04-11</td>
+                    <td>ملعب الأمل</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
