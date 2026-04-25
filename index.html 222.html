@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field - لوحة تحكم المدير</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #F9FAFB 0%, #EEF2FF 100%); color: #111827; min-height: 100vh; }
+    
+    /* Header */
+    header { background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 16px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-direction: row-reverse; }
+    .logo { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+    .header-left { display: flex; align-items: center; gap: 20px; flex-direction: row-reverse; }
+    .logout-btn { color: #dc2626; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; background: #fef2f2; border: none; cursor: pointer; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+    .logout-btn:hover { background: #fee2e2; transform: translateY(-1px); }
+    .email { color: #4b5563; font-size: 14px; background: #f3f4f6; padding: 6px 12px; border-radius: 6px; }
+    .dashboard-label { font-weight: 700; color: #1f2937; font-size: 15px; }
+    
+    /* Main */
+    main { padding: 32px 24px; max-width: 1400px; margin: 0 auto; }
+    .title-wrap { display: flex; align-items: center; gap: 12px; justify-content: flex-end; margin-bottom: 24px; flex-direction: row-reverse; }
+    .title-wrap h1 { font-size: 32px; font-weight: 800; color: #111827; margin: 0; }
+    .title-icon { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); padding: 10px; border-radius: 12px; display: flex; }
+    
+    /* Stats Cards */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: #ffffff; border-radius: 16px; padding: 20px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.3s; }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
+    .stat-label { color: #6b7280; font-size: 14px; font-weight: 500; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+    .stat-value { font-size: 32px; font-weight: 800; color: #111827; text-align: right; }
+    .stat-card.blue .stat-value { color: #1e40af; }
+    .stat-card.green .stat-value { color: #059669; }
+    .stat-card.red .stat-value { color: #dc2626; }
+    
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 24px; background: #ffffff; padding: 8px; border-radius: 12px; border: 1px solid #e5e7eb; flex-direction: row-reverse; width: fit-content; margin-right: auto; }
+    .tabs button { padding: 10px 20px; color: #6b7280; background: none; border: none; cursor: pointer; font-size: 15px; font-weight: 600; font-family: 'Cairo', sans-serif; border-radius: 8px; transition: all 0.2s; }
+    .tabs button:hover { background: #f3f4f6; }
+    .tabs button.active { color: #ffffff; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); box-shadow: 0 2px 8px rgba(59,130,246,0.3); }
+    
+    /* Card */
+    .card { background-color: #ffffff !important; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; overflow: hidden; }
+    .card-header { padding: 24px 28px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; flex-direction: row-reverse; }
+    .card h2 { font-size: 20px; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 10px; }
+    .card-badge { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+    
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; background-color: #ffffff !important; }
+    thead { background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%) !important; }
+    th { padding: 16px 28px; font-weight: 700; text-align: right; color: #374151; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    td { padding: 20px 28px; text-align: right; background-color: #ffffff !important; }
+    tbody tr { border-bottom: 1px solid #f3f4f6; background-color: #ffffff !important; transition: all 0.2s; }
+    tbody tr:hover { background-color: #f9fafb !important; }
+    tbody tr:last-child { border-bottom: none; }
+    
+    /* Badges */
+    .badge { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .badge-red { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .badge-green { background-color: #f0fdf4; color: #065f46; border: 1px solid #bbf7d0; }
+    
+    /* Button */
+    .icon-btn { color: #ef4444; background: #fef2f2; border: 1px solid #fecaca; cursor: pointer; padding: 8px; border-radius: 8px; display: inline-flex; transition: all 0.2s; }
+    .icon-btn:hover { background: #fee2e2; transform: scale(1.05); }
+    .field-name { font-weight: 700; color: #111827; font-size: 15px; }
+    .date { color: #6b7280; font-size: 14px; font-weight: 500; }
+    .client { color: #374151; font-size: 14px; font-weight: 600; }
+    .client-wrap { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">FIELD</div>
+      <div class="header-left">
+        <button class="logout-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          خروج
+        </button>
+        <span class="email">rowida123@filed.com</span>
+        <span class="dashboard-label">لوحة التحكم</span>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="title-wrap">
+      <div class="title-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+      </div>
+      <h1>لوحة تحكم المدير</h1>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card blue">
+        <div class="stat-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          إجمالي الحجوزات
+        </div>
+        <div class="stat-value">4</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          تم التأكيد
+        </div>
+        <div class="stat-value">1</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+          ملغي
+        </div>
+        <div class="stat-value">3</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button>إدارة الملاعب</button>
+      <button class="active">الحجوزات</button>
+      <button>جلسات التدريب</button>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-badge">4 حجوزات</div>
+        <h2>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          سجل الحجوزات
+        </h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الإجراءات</th>
+              <th>الحالة</th>
+              <th>العميل</th>
+              <th>التاريخ والوقت</th>
+              <th>الملعب</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td><span class="badge badge-red">● ملغي</span></td>
+              <td><div class="client-wrap"><div class="avatar">أ</div><span class="client">أحمد محمد</span></div></td>
+              <td class="date">2026-04-11 • 23:00</td>
+              <td class="field-name">الملعب الخماسي - الظهر الصحراوي</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><span class="badge badge-red">● ملغي</span></td>
+              <td><div class="client-wrap"><div class="avatar">م</div><span class="client">محمود علي</span></div></td>
+              <td class="date">2026-04-11 • 22:00</td>
+              <td class="field-name">الملعب الخماسي - الظهر الصحراوي</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><span class="badge badge-red">● ملغي</span></td>
+              <td><div class="client-wrap"><div class="avatar">خ</div><span class="client">خالد سعيد</span></div></td>
+              <td class="date">2026-04-11 • 20:00</td>
+              <td class="field-name">الملعب الخماسي - الظهر الصحراوي</td>
+            </tr>
+            <tr>
+              <td><button class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg></button></td>
+              <td><span class="badge badge-green">✓ تم التأكيد</span></td>
+              <td><div class="client-wrap"><div class="avatar">ي</div><span class="client">يوسف إبراهيم</span></div></td>
+              <td class="date">2026-04-11 • 18:00</td>
+              <td class="field-name">ملعب الأمل 2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
