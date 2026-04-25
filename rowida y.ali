@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جلسات التدريب - لوحة تحكم المدير</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: #E8F5E8;
+            direction: rtl;
+        }
+
+        /* الهيدر */
+        .header {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .user-info .badge {
+            background: #2E7D32;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .logout {
+            color: #D32F2F;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* العنوان الرئيسي */
+        .main-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1B5E20;
+            margin: 30px 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* التابات */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+        }
+
+        .tabs a {
+            color: #388E3C;
+            text-decoration: none;
+            font-weight: 600;
+            padding-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .tabs a.active {
+            border-bottom: 3px solid #2E7D32;
+            color: #2E7D32;
+        }
+
+        /* الكارد الأبيض */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin: 0 50px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #212121;
+            text-align: left;
+        }
+
+        /* الفورم */
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group {
+            flex: 1;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #424242;
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #C8E6C9;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #1B5E20;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .form-control.date {
+            background: #E8F5E8;
+        }
+
+        .form-control.time {
+            background: #E8F5E8;
+        }
+
+        select.form-control {
+            appearance: none;
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #1B5E20;
+        }
+
+        /* Dropdown list */
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #757575;
+            border-radius: 10px;
+            margin-top: 5px;
+            padding: 10px;
+            z-index: 10;
+            display: none;
+        }
+
+        .form-group:hover .dropdown-list {
+            display: block;
+        }
+
+        .dropdown-list div {
+            color: white;
+            padding: 8px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .dropdown-list div:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* الجدول الفاضي */
+        .table-header {
+            display: flex;
+            justify-content: space-around;
+            padding: 14px;
+            background: #C8E6C9;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #1B5E20;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            color: #757575;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .empty-state .dot {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: #4CAF50;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <div class="header">
+        <div class="logout">
+            خروج 
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+        </div>
+        
+        <div class="user-info">
+            <span class="badge">rowida189@filed.com</span>
+            <span class="badge">لوحة التحكم</span>
+        </div>
+
+        <div class="logo">
+            Field
+            <svg width="35" height="35" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="8" fill="#2E7D32"/>
+                <path d="M12 28L20 12L28 28H12Z" fill="white"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- العنوان -->
+    <h1 class="main-title">
+        لوحة تحكم المدير
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="#2E7D32">
+            <circle cx="7" cy="7" r="3"/>
+            <circle cx="17" cy="7" r="3"/>
+            <circle cx="7" cy="17" r="3"/>
+            <circle cx="17" cy="17" r="3"/>
+        </svg>
+    </h1>
+
+    <!-- التابات -->
+    <div class="tabs">
+        <a href="#">إدارة الملاعب</a>
+        <a href="#">الحجوزات</a>
+        <a href="#" class="active">جلسات التدريب</a>
+    </div>
+
+    <!-- الكارد -->
+    <div class="card">
+        <h3 class="card-title">سجل التدريبات (0)</h3>
+        
+        <!-- الفورم -->
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label>اختر الملعب</label>
+                <div style="position: relative;">
+                    <select class="form-control">
+                        <option>اختر الملعب...</option>
+                    </select>
+                    <span class="dropdown-icon">▼</span>
+                    <div class="dropdown-list">
+                        <div>ملعب الخماسي - الظهير الصحراوي</div>
+                        <div>ملعب الأمل 2</div>
+                        <div>الملعب السداسي - شارع التسعين</div>
+                        <div>ملعب النجوم</div>
+                        <div>ملعب الواحة</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>التاريخ</label>
+                <input type="text" class="form-control date" placeholder="mm dd yyyy" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>الوقت</label>
+                <input type="text" class="form-control time" value="18:00" readonly>
+            </div>
+        </div>
+
+        <!-- هيدر الجدول -->
+        <div class="table-header">
+            <div>الملعب</div>
+            <div>التاريخ</div>
+            <div>الوقت</div>
+        </div>
+
+        <!-- حالة فاضية -->
+        <div class="empty-state">
+            <span class="dot"></span>
+            لا توجد تدريبات مضافة
+        </div>
+    </div>
+
+</body>
+</html>
